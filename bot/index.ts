@@ -3,6 +3,7 @@ import { listProducts, getOrCreateCustomer, createOrder, formatInvoice } from ".
 import { addToCart, getCart, clearCart } from "../lib/cart";
 import { runAgent } from "../lib/agent";
    import { registerPayments } from "./pay";
+   import { askOwnerToApprove, registerApprovals } from "./approvals";
 const bot = new Bot(process.env.TELEGRAM_BOT_TOKEN!);
 const naira = (n: number) => `₦${n.toLocaleString()}`;
 
@@ -34,6 +35,7 @@ bot.command("add", async (ctx) => {
   );
 });
 
+bot.command("whoami", (ctx) => ctx.reply(`Your Telegram ID: ${ctx.from!.id}`));
 bot.command("cart", async (ctx) => {
   const cart = getCart(ctx.from!.id);
   if (cart.length === 0) return ctx.reply("Your cart is empty. Send /catalog to browse.");
@@ -55,12 +57,16 @@ bot.command("checkout", async (ctx) => {
     const customerId = await getOrCreateCustomer(ctx.from!.id, ctx.from!.first_name);
     const result = await createOrder(customerId, cart);
     clearCart(ctx.from!.id);
+        if (result.needsApproval) {
+      await askOwnerToApprove(bot, result.orderId, result.total, ctx.from!.first_name).catch(console.error);
+    }
     return ctx.reply(formatInvoice(result));
   } catch (e) {
     return ctx.reply(e instanceof Error ? e.message : "Something went wrong. Please try again.");
   }
 });
    registerPayments(bot);
+   registerApprovals(bot);
 // Any normal message (not a /command) goes to the AI assistant.
 bot.on("message:text", async (ctx) => {
   if (ctx.message.text.startsWith("/")) return;

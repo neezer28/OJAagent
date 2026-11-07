@@ -2,6 +2,7 @@ import { Bot } from "grammy";
 import { db } from "../lib/supabase";
 import { getOrCreateCustomer } from "../lib/orders";
 import { createPaymentRequest, checkPayment, chainOptions } from "../lib/payments";
+import { checkPendingPayments } from "../lib/recovery";
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
@@ -31,6 +32,19 @@ async function watchPayment(bot: Bot, chatId: number, paymentId: string) {
 }
 
 export function registerPayments(bot: Bot) {
+      // Checks every unfinished payment until its deadline, even after a restart.
+  let polling = false;
+  setInterval(async () => {
+    if (polling) return;
+    polling = true;
+    try {
+      await checkPendingPayments((id, text) => bot.api.sendMessage(id, text));
+    } catch (e) {
+      console.error("Payment check error:", e);
+    } finally {
+      polling = false;
+    }
+  }, 30_000);
   bot.command("pay", async (ctx) => {
     const [chain, address] = ctx.match.trim().split(/\s+/);
     if (!chain || !address) {
@@ -54,7 +68,6 @@ export function registerPayments(bot: Bot) {
       await ctx.reply(
         `Pay exactly ${p.amountIn} ${p.label} to:\n\n${p.depositAddress}\n\nSend it before ${new Date(p.deadline).toUTCString()}.\nOnly send ${p.label}. Anything else may be lost.\n\nI'll confirm here as soon as it arrives.`
       );
-      void watchPayment(bot, ctx.chat.id, p.paymentId).catch((e) => console.error(e));
     } catch (e) {
       await ctx.reply(e instanceof Error ? e.message : "Something went wrong. Please try again.");
     }

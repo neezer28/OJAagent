@@ -110,7 +110,7 @@ With a NEAR AI Cloud key that has credit, send plain text such as "Hi, what fabr
 - **Payment checks** run every 30 seconds for every unfinished payment until its deadline, including after a restart. Payments past the deadline are marked `EXPIRED`.
 - The exchange rate is a fixed demo value (`NGN_PER_USD`), not a live rate.
 - Carts are kept in memory and are lost when the bot restarts.
-- Orders created through the AI assistant do not yet notify the owner for approval. They stay `pending_approval`; only `/checkout` sends the buttons.
+- Orders created through the AI assistant now also send the owner the Approve / Reject buttons, using the same function as `/checkout`. That code compiles, but it has not been tested through the assistant yet, because the NEAR AI Cloud account had no credits.
 - There is no owner dashboard yet. The owner works from Telegram and the Supabase table editor.
 - The NEAR AI Cloud account needs credits for the chat assistant to work.
 

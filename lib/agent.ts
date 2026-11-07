@@ -5,6 +5,10 @@ import { addToCart, getCart, clearCart } from "./cart";
 
 const naira = (n: number) => `₦${n.toLocaleString()}`;
 
+
+
+// Called when an order needs the owner's approval, so the bot can message the owner.
+type ApprovalNotifier = (orderId: string, total: number, customerName: string) => Promise<unknown>;
 const SYSTEM = `You are Oja, the friendly sales assistant for a fabric shop in Nigeria (Ankara and Aso Oke).
 Rules:
 - Always use the tools for products, prices, stock and totals. Never guess or invent them.
@@ -21,8 +25,7 @@ const tools: any[] = [
 ];
 
 const history = new Map<number, any[]>();
-
-async function runTool(name: string, args: any, userId: number, firstName?: string): Promise<string> {
+async function runTool(name: string, args: any, userId: number, firstName?: string, onNeedsApproval?: ApprovalNotifier): Promise<string> {
   try {
     if (name === "list_products") {
       const ps = await listProducts();
@@ -56,6 +59,14 @@ async function runTool(name: string, args: any, userId: number, firstName?: stri
       if (cart.length === 0) return "The cart is empty.";
       const customerId = await getOrCreateCustomer(userId, firstName);
       const result = await createOrder(customerId, cart);
+
+      if (result.needsApproval && onNeedsApproval) {
+        try {
+          await onNeedsApproval(result.orderId, result.total, firstName ?? "Customer");
+        } catch (e) {
+          console.error("Could not notify the owner", e);
+        }
+      }      
       clearCart(userId);
       return formatInvoice(result);
     }
@@ -65,7 +76,7 @@ async function runTool(name: string, args: any, userId: number, firstName?: stri
   }
 }
 
-export async function runAgent(userId: number, firstName: string | undefined, text: string): Promise<string> {
+export async function runAgent(userId: number, firstName: string | undefined, text: string, onNeedsApproval?: ApprovalNotifier): Promise<string> {
   if (!process.env.NEAR_AI_API_KEY || !MODEL) {
     return "My AI assistant isn't switched on yet. You can still use /catalog, /add, /cart and /checkout.";
   }
@@ -89,7 +100,7 @@ export async function runAgent(userId: number, firstName: string | undefined, te
       } catch {
         args = {};
       }
-      const result = await runTool(call.function.name, args, userId, firstName);
+      const result = await runTool(call.function.name, args, userId, firstName, onNeedsApproval);
       if (call.function.name === "checkout" && result.startsWith("INVOICE")) invoice = result;
       messages.push({ role: "tool", tool_call_id: call.id, content: result });
     }

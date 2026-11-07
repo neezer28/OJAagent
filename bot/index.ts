@@ -72,7 +72,7 @@ bot.on("message:text", async (ctx) => {
   if (ctx.message.text.startsWith("/")) return;
   try {
     await ctx.replyWithChatAction("typing");
-    const reply = await runAgent(ctx.from.id, ctx.from.first_name, ctx.message.text);
+    const reply = await runAgent(ctx.from.id, ctx.from.first_name, ctx.message.text, (orderId, total, name) => askOwnerToApprove(bot, orderId, total, name));
     await ctx.reply(reply);
   } catch (e) {
     console.error("Agent error:", e);

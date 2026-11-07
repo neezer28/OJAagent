@@ -2,7 +2,7 @@ import { Bot } from "grammy";
 import { listProducts, getOrCreateCustomer, createOrder, formatInvoice } from "../lib/orders";
 import { addToCart, getCart, clearCart } from "../lib/cart";
 import { runAgent } from "../lib/agent";
-
+   import { registerPayments } from "./pay";
 const bot = new Bot(process.env.TELEGRAM_BOT_TOKEN!);
 const naira = (n: number) => `₦${n.toLocaleString()}`;
 
@@ -60,7 +60,7 @@ bot.command("checkout", async (ctx) => {
     return ctx.reply(e instanceof Error ? e.message : "Something went wrong. Please try again.");
   }
 });
-
+   registerPayments(bot);
 // Any normal message (not a /command) goes to the AI assistant.
 bot.on("message:text", async (ctx) => {
   if (ctx.message.text.startsWith("/")) return;

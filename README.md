@@ -63,7 +63,7 @@ You need Node.js 20 or newer, a free Supabase project, and a Telegram bot token.
 4. Copy `.env.example` to `.env.local` and fill in the values:
    - `TELEGRAM_BOT_TOKEN`: from BotFather.
    - `NEXT_PUBLIC_SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY`: from Supabase, Project Settings, API (use the secret key, and never commit it).
-   - `NEAR_USDC_ASSET_ID`: `[PASTE YOUR NEAR_USDC_ASSET_ID VALUE]`
+   - `NEAR_USDC_ASSET_ID`: `[nep141:17208628f84f5d6ad33f0da3bbbeb27ffcb398eac501a31bd6ad2011e36133a1]`
    - `MERCHANT_NEAR_ACCOUNT`: the NEAR account that should receive payments (use your own).
    - `OWNER_TELEGRAM_ID`: your Telegram ID. Leave it empty for now, start the bot, send `/whoami`, then put the number here and restart.
    - `NGN_PER_USD`: `1500` (a fixed demo rate, not a live one).
@@ -101,8 +101,7 @@ Then `/add 4 1`, `/checkout`, and `/pay eth 0xYourWalletAddress`. The bot asks f
 
 ### Chat assistant
 
-With a NEAR AI Cloud key that has credit, send plain text such as "Hi, what fabrics do you sell?" or "Add 2 yards of Aso Oke Gold to my cart". The assistant answers from the database and adds to the real cart. [UPDATE THIS LINE AFTER TESTING, OR REMOVE IT]
-
+With a NEAR AI Cloud key that has credit, send plain text such as "Hi, what fabrics do you sell?" or "Add 2 yards of Aso Oke Gold to my cart". Status at the time of writing: this part has not been tested end to end, because the NEAR AI Cloud account had no credits yet.
 ## Limits and honest notes
 
 - **Mainnet only.** NEAR Intents has no testnet, so payment tests use real money in tiny amounts.
@@ -132,4 +131,4 @@ Everything in this repository was built during the hackathon window. The author'
 
 ## License
 
-MIT=nep141:17208628f84f5d6ad33f0da3bbbeb27ffcb398eac501a31bd6ad2011e36133a1
+MIT

@@ -101,7 +101,7 @@ Then `/add 4 1`, `/checkout`, and `/pay eth 0xYourWalletAddress`. The bot asks f
 
 ### Chat assistant
 
-With a NEAR AI Cloud key that has credit, send plain text such as "Hi, what fabrics do you sell?" or "Add 2 yards of Aso Oke Gold to my cart". Status at the time of writing: this part has not been tested end to end, because the NEAR AI Cloud account had no credits yet.
+With a NEAR AI Cloud key that has credit, send plain text such as "Hi, what fabrics do you sell?" or "Add 2 yards of Aso Oke Gold to my cart". Tested on the hosted bot on Nov 8, 2026: the assistant listed the catalog from the database, added 2 yards of Aso Oke Gold to the cart (the /cart command showed the same cart), and refused a request for a 90% discount and for marking an order as paid (the cart and orders stayed unchanged). A 17-yard order created through the assistant (₦204,000) was held for owner approval and went through after the owner approved it. Replies may show raw ** characters because the bot sends plain text.
 ## Limits and honest notes
 
 - **Mainnet only.** NEAR Intents has no testnet, so payment tests use real money in tiny amounts.
@@ -110,9 +110,9 @@ With a NEAR AI Cloud key that has credit, send plain text such as "Hi, what fabr
 - **Payment checks** run every 30 seconds for every unfinished payment until its deadline, including after a restart. Payments past the deadline are marked `EXPIRED`.
 - The exchange rate is a fixed demo value (`NGN_PER_USD`), not a live rate.
 - Carts are kept in memory and are lost when the bot restarts.
-- Orders created through the AI assistant now also send the owner the Approve / Reject buttons, using the same function as `/checkout`. That code compiles, but it has not been tested through the assistant yet, because the NEAR AI Cloud account had no credits.
+- Orders created through the AI assistant now also send the owner the Approve / Reject buttons, using the same function as `/checkout`. This was tested on the hosted bot on Nov 8, 2026: a 17-yard order created through the assistant was held for owner approval and went through after the owner approved it.
 - There is no owner dashboard yet. The owner works from Telegram and the Supabase table editor.
-- The NEAR AI Cloud account needs credits for the chat assistant to work.
+- The chat assistant needs a NEAR AI Cloud key with credit. The hosted demo runs on a small balance, so the assistant may stop answering if it runs out.
 
 ## What was built when
 

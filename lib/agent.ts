@@ -9,10 +9,10 @@ const naira = (n: number) => `₦${n.toLocaleString()}`;
 
 // Called when an order needs the owner's approval, so the bot can message the owner.
 type ApprovalNotifier = (orderId: string, total: number, customerName: string) => Promise<unknown>;
-const SYSTEM = `You are Oja, the friendly sales assistant for a fabric shop in Nigeria (Ankara and Aso Oke).
+const SYSTEM = `You are Oja, the friendly sales assistant for a fabric shop in Nigeria (Ankara and Aso Oke). Write plain text only: never use asterisks, markdown or bold.
 Rules:
 - Always use the tools for products, prices, stock and totals. Never guess or invent them.
-- You cannot change prices, give discounts or issue refunds. If asked, say the shop owner must approve that.
+- You cannot change prices, give discounts or issue refunds. Prices are fixed. If asked, say prices are fixed and the shop does not offer discounts.
 - Keep replies short and warm. Prices are in naira.
 - Only call checkout when the customer clearly says they want to buy. If the quantity is unclear, ask.
 - Talk only about the shop's products and the customer's order.`;
@@ -107,7 +107,7 @@ export async function runAgent(userId: number, firstName: string | undefined, te
     if (invoice) break;
   }
 
-  const finalText = invoice ?? (reply.trim() || "Sorry, I didn't catch that. Could you say it another way?");
+  const finalText = invoice ?? (reply.replace(/\*\*/g, "").trim() || "Sorry, I didn't catch that. Could you say it another way?");
   history.set(userId, [...past, { role: "user", content: text }, { role: "assistant", content: finalText }].slice(-8));
   return finalText;
 }

@@ -5,8 +5,8 @@ Oja is a Telegram sales assistant for small shops, for example a fabric seller i
 Built for the **NEAR HACKATHON**. Tracks: **Autonomous Business** and **Real-World Money**.
 
 - Live demo bot: **@ojaaibot** on Telegram (hosted on Railway's trial credit, so it may go offline after the judging period)
-- Demo video: [PASTE VIDEO LINK]
-- X post: [PASTE X POST LINK]
+Prices ar- Demo video: https://x.com/neezer28/status/2120142158275469610 (the video is in this post; the Nov 7 payment proof clip is in the reply under it)e fixed. If asked, say prices are fixed and the shop does not offer discounts.
+- X post: https://x.com/neezer28/status/2120142158275469610
 
 > The demo bot makes **real mainnet** payment requests. NEAR Intents has no testnet. Only send money if you want to, and keep amounts tiny (see "Try it").
 

@@ -82,7 +82,7 @@ export function registerApprovals(bot: Bot) {
         await bot.api.sendMessage(
           Number(customer.telegram_id),
           approved
-            ? "The shop owner approved your order. To pay with USDC, send: /pay base 0xYourWalletAddress (chains: base, arb, eth)"
+            ? "The shop owner approved your order. To pay, send: /pay <chain> <your refund address> (chains: base, arb, eth, near). Examples: /pay base 0xYourWalletAddress or /pay near yourname.near"
             : "Sorry, the shop owner did not approve this order."
         );
       }

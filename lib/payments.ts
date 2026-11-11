@@ -14,6 +14,7 @@ const ORIGINS: Record<string, { asset: string; label: string }> = {
   base: { asset: "nep141:base-0x833589fcd6edb6e08f4c7c32d4f71b54bda02913.omft.near", label: "USDC on Base" },
   arb: { asset: "nep141:arb-0xaf88d065e77c8cc2239327c5edb3a432268e5831.omft.near", label: "USDC on Arbitrum" },
   eth: { asset: "nep141:eth-0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48.omft.near", label: "USDC on Ethereum" },
+  near: { asset: "nep141:wrap.near", label: "NEAR" },
 };
 
 export const chainOptions = () => Object.keys(ORIGINS);
@@ -21,8 +22,16 @@ export const chainOptions = () => Object.keys(ORIGINS);
 export async function createPaymentRequest(orderId: string, chain: string, refundAddress: string) {
   const origin = ORIGINS[chain];
   if (!origin) throw new Error(`Choose one of: ${chainOptions().join(", ")}`);
-  if (!/^0x[a-fA-F0-9]{40}$/.test(refundAddress)) {
-    throw new Error("That refund address doesn't look right. It should start with 0x and be 42 characters long.");
+  const validRefund =
+    chain === "near"
+      ? /^([a-z0-9_-]+\.)+near$|^[a-f0-9]{64}$/.test(refundAddress.trim().toLowerCase())
+      : /^0x[a-fA-F0-9]{40}$/.test(refundAddress);
+  if (!validRefund) {
+    throw new Error(
+      chain === "near"
+        ? "That refund address doesn't look right. For NEAR, send your account name, like yourname.near."
+        : "That refund address doesn't look right. It should start with 0x and be 42 characters long."
+    );
   }
 
   const { data: order, error } = await db

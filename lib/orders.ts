@@ -92,6 +92,6 @@ export function formatInvoice(r: Awaited<ReturnType<typeof createOrder>>) {
   );
   const status = r.needsApproval
     ? "This order is above the shop's limit, so the owner must approve it before payment."
-    : "To pay with USDC, send: /pay base 0xYourWalletAddress (chains: base, arb, eth)";
+    : "To pay, send: /pay <chain> <your refund address> (chains: base, arb, eth, near). Examples: /pay base 0xYourWalletAddress or /pay near yourname.near";
   return `INVOICE #${r.orderId.slice(0, 8)}\n\n${lines.join("\n")}\n\nTotal: ${naira(r.total)}\n\n${status}`;
 }

@@ -49,7 +49,7 @@ export function registerPayments(bot: Bot) {
     const [chain, address] = ctx.match.trim().split(/\s+/);
     if (!chain || !address) {
       return ctx.reply(
-        `To pay with USDC, send:\n/pay <chain> <your refund address>\n\nChains: ${chainOptions().join(", ")}\nExample: /pay base 0xYourWalletAddress\n\nThe refund address is where your money goes back if the payment fails.`
+        `To pay, send:\n/pay <chain> <your refund address>\n\nChains: ${chainOptions().join(", ")}\nExamples:\n/pay base 0xYourWalletAddress\n/pay near yourname.near\n\nThe refund address is where your money goes back if the payment fails.`
       );
     }
     try {
@@ -66,7 +66,7 @@ export function registerPayments(bot: Bot) {
 
       const p = await createPaymentRequest(order.id, chain.toLowerCase(), address.trim());
       await ctx.reply(
-        `Pay exactly ${p.amountIn} ${p.label} to:\n\n${p.depositAddress}\n\nSend it before ${new Date(p.deadline).toUTCString()}.\nOnly send ${p.label}. Anything else may be lost.\n\nI'll confirm here as soon as it arrives.`
+        `Send at least ${p.amountIn} ${p.label} (round UP if your wallet limits decimals) to:\n\n${p.depositAddress}\n\nSend it before ${new Date(p.deadline).toUTCString()}.\nOnly send ${p.label}. Anything else may be lost.\n\nI'll confirm here as soon as it arrives.`
       );
     } catch (e) {
       await ctx.reply(e instanceof Error ? e.message : "Something went wrong. Please try again.");

@@ -87,7 +87,7 @@ Stop any other copy of the same bot first. Two copies with the same token cause 
 | Press **Approve** as the owner | The customer gets a message with the `/pay` instructions. **Reject** tells the customer it was not approved. |
 | `/pay eth 0xYourWalletAddress` (after a normal, approved order) | "Pay exactly X USDC on Ethereum to: 0x... Send it before [date]". A row appears in the `payments` table with status `PENDING_DEPOSIT`. |
 
-Use your own wallet address as the refund address. It must be `0x` followed by 40 hex characters. Chains: `eth`, `base`, `arb`.
+Use your own wallet address as the refund address. It must be `0x` followed by 40 hex characters. Send at least $Chains: `eth`, `base`, `arb`, `near`. For `near`, the refund address is your NEAR account name instead (for example `yourname.near`), and the `0x` rule does not apply.{p.amountIn} ${p.label} (round UP if your wallet limits decimals) to:
 
 ### Optional: a real payment (about 0.33 USDC)
 
@@ -97,7 +97,7 @@ The minimum payment is about **0.30 USDC**, so a normal order is too small to te
 insert into products (name, unit, price_ngn, stock) values ('Test item', 'piece', 480, 5);
 ```
 
-Then `/add 4 1`, `/checkout`, and `/pay eth 0xYourWalletAddress`. The bot asks for about 0.32 to 0.33 USDC on Ethereum. After you send it (check the gas fee first), the bot normally says **"Payment received. Your order is confirmed. Thank you!"** within a few minutes. The `payments` row changes to `SUCCESS`, the order to `paid`, and the stock drops by one. This is exactly how the author tested it on mainnet.
+Then `/add 4 1`, `/checkout`, and `/pay eth 0xYourWalletAddress`. The bot asks for about 0.32 to 0.33 USDC on Ethereum. After you send it (check the gas fee first), the bot normally says **"Payment received. Your order is confirmed. Thank you!"** within a few minutes. The `payments` row changes to `SUCCESS`, the order to `paid`, and the stock drops by one. This is exactly how the author tested it on mainnet. NEAR is also an option: `/pay near yourname.near` asks for a small amount of NEAR instead of USDC (about 0.09 NEAR for the 480-naira test item when it was tested), and the shop still receives USDC. Send at least the amount shown, and round up if your wallet limits decimals; a deposit below the quoted minimum stops at `INCOMPLETE_DEPOSIT` until it is topped up before the deadline. The author tested this on Nov 11, 2026 with a real payment (0.089 NEAR plus a 0.001 NEAR top-up, status `SUCCESS`).
 
 ### Chat assistant
 
@@ -105,7 +105,7 @@ With a NEAR AI Cloud key that has credit, send plain text such as "Hi, what fabr
 ## Limits and honest notes
 
 - **Mainnet only.** NEAR Intents has no testnet, so payment tests use real money in tiny amounts.
-- **Minimum payment** is about 0.30 USDC. The quotes also show a refund fee of about 0.30 USDC; the author has not confirmed exactly when it applies.
+- **Minimum payment** is about 0.30 USDC. The quotes also show a refund fee of about 0.30 USDC; the author has not confirmed exactly when it applies. NEAR payments were tested once with a real payment and one top-up; the refund of a small overpayment was not tested.
 - **Funds land in the shop's NEAR Intents balance** under the merchant account. How the owner withdraws that balance is not covered here.
 - **Payment checks** run every 30 seconds for every unfinished payment until its deadline, including after a restart. Payments past the deadline are marked `EXPIRED`.
 - The exchange rate is a fixed demo value (`NGN_PER_USD`), not a live rate.

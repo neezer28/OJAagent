@@ -63,7 +63,7 @@ You need Node.js 20 or newer, a free Supabase project, and a Telegram bot token.
 4. Copy `.env.example` to `.env.local` and fill in the values:
    - `TELEGRAM_BOT_TOKEN`: from BotFather.
    - `NEXT_PUBLIC_SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY`: from Supabase, Project Settings, API (use the secret key, and never commit it).
-   - `NEAR_USDC_ASSET_ID`: `[nep141:17208628f84f5d6ad33f0da3bbbeb27ffcb398eac501a31bd6ad2011e36133a1]`
+   - `NEAR_USDC_ASSET_ID`: `nep141:17208628f84f5d6ad33f0da3bbbeb27ffcb398eac501a31bd6ad2011e36133a1`
    - `MERCHANT_NEAR_ACCOUNT`: the NEAR account that should receive payments (use your own).
    - `OWNER_TELEGRAM_ID`: your Telegram ID. Leave it empty for now, start the bot, send `/whoami`, then put the number here and restart.
    - `NGN_PER_USD`: `1500` (a fixed demo rate, not a live one).
@@ -85,9 +85,9 @@ Stop any other copy of the same bot first. Two copies with the same token cause 
 | `/checkout` | An invoice with an order number and the total. The cart is empty again. |
 | `/add 3 17`, then `/checkout` | An invoice (₦204,000) saying the owner must approve it. The owner gets a message with **Approve** and **Reject** buttons. |
 | Press **Approve** as the owner | The customer gets a message with the `/pay` instructions. **Reject** tells the customer it was not approved. |
-| `/pay eth 0xYourWalletAddress` (after a normal, approved order) | "Pay exactly X USDC on Ethereum to: 0x... Send it before [date]". A row appears in the `payments` table with status `PENDING_DEPOSIT`. |
+| `/pay eth 0xYourWalletAddress` (after a normal, approved order) | "Send at least X USDC on Ethereum (round UP if your wallet limits decimals) to: 0x... Send it before [date]". A row appears in the `payments` table with status `PENDING_DEPOSIT`. |
 
-Use your own wallet address as the refund address. It must be `0x` followed by 40 hex characters. Send at least $Chains: `eth`, `base`, `arb`, `near`. For `near`, the refund address is your NEAR account name instead (for example `yourname.near`), and the `0x` rule does not apply.{p.amountIn} ${p.label} (round UP if your wallet limits decimals) to:
+Use your own wallet address as the refund address. It must be `0x` followed by 40 hex characters. Chains: `eth`, `base`, `arb`, `near`. For `near`, the refund address is your NEAR account name instead (for example `yourname.near`), and the `0x` rule does not apply.
 
 ### Optional: a real payment (about 0.33 USDC)
 

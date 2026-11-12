@@ -14,7 +14,7 @@ Built for the **NEAR HACKATHON**. Tracks: **Autonomous Business** and **Real-Wor
 
 1. Answers product questions and checks stock from the database.
 2. Builds a cart and issues an invoice. Prices, stock and totals always come from the database.
-3. Creates a **NEAR Intents payment request** (a deposit address and an exact USDC amount) for the customer.
+3. Creates a **NEAR Intents payment request** (a deposit address and an exact amount, in USDC or in NEAR) for the customer.
 4. Checks the payment status until it is confirmed, expired or refunded, then updates the order and the stock.
 5. Sends orders above the owner's limit to the owner on Telegram with **Approve / Reject** buttons.
 6. Logs every action in an `agent_actions` table.

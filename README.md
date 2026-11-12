@@ -5,7 +5,7 @@ Oja is a Telegram sales assistant for small shops, for example a fabric seller i
 Built for the **NEAR HACKATHON**. Tracks: **Autonomous Business** and **Real-World Money**.
 
 - Live demo bot: **@ojaaibot** on Telegram (hosted on Railway's trial credit, so it may go offline after the judging period)
-Prices ar- Demo video: https://x.com/neezer28/status/2120142158275469610 (the video is in this post; the Nov 7 payment proof clip is in the reply under it)e fixed. If asked, say prices are fixed and the shop does not offer discounts.
+- Demo video: https://x.com/neezer28/status/2120142158275469610 (the video is in this post; the Nov 7 payment proof clip is in the reply under it)
 - X post: https://x.com/neezer28/status/2120142158275469610
 
 > The demo bot makes **real mainnet** payment requests. NEAR Intents has no testnet. Only send money if you want to, and keep amounts tiny (see "Try it").
@@ -30,7 +30,7 @@ Prices ar- Demo video: https://x.com/neezer28/status/2120142158275469610 (the vi
 
 ## NEAR tools used
 
-- **NEAR Intents 1Click API** (`@defuse-protocol/one-click-sdk-typescript`, `https://1click.chaindefuser.com`): real quotes with exact-output swaps. The customer pays USDC from Ethereum, Base or Arbitrum, and the shop receives USDC inside its NEAR Intents balance (recipient type `INTENTS`, account `neezer.near`). The status endpoint confirms payment.
+- **NEAR Intents 1Click API** (`@defuse-protocol/one-click-sdk-typescript`, `https://1click.chaindefuser.com`): real quotes with exact-output swaps. The customer pays USDC from Ethereum, Base or Arbitrum (or pays a small amount of NEAR that is swapped to USDC), and the shop receives USDC inside its NEAR Intents balance (recipient type `INTENTS`, account `neezer.near`). The status endpoint confirms payment.
 - **NEAR AI Cloud** (OpenAI-compatible API, `https://cloud-api.near.ai/v1`): the language model behind the chat assistant.
 - **NEAR account** `neezer.near`: the merchant and payout account.
 

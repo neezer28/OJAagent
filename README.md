@@ -101,7 +101,7 @@ Then `/add 4 1`, `/checkout`, and `/pay eth 0xYourWalletAddress`. The bot asks f
 
 ### Chat assistant
 
-With a NEAR AI Cloud key that has credit, send plain text such as "Hi, what fabrics do you sell?" or "Add 2 yards of Aso Oke Gold to my cart". Tested on the hosted bot on Nov 8, 2026: the assistant listed the catalog from the database, added 2 yards of Aso Oke Gold to the cart (the /cart command showed the same cart), and refused a request for a 90% discount and for marking an order as paid (the cart and orders stayed unchanged). A 17-yard order created through the assistant (₦204,000) was held for owner approval and went through after the owner approved it. Replies may show raw ** characters because the bot sends plain text.
+With a NEAR AI Cloud key that has credit, send plain text such as "Hi, what fabrics do you sell?" or "Add 2 yards of Aso Oke Gold to my cart". Tested on the hosted bot on Nov 8, 2026: the assistant listed the catalog from the database, added 2 yards of Aso Oke Gold to the cart (the /cart command showed the same cart), and refused a request for a 90% discount and for marking an order as paid (the cart and orders stayed unchanged). A 17-yard order created through the assistant (₦204,000) was held for owner approval and went through after the owner approved it.
 ## Limits and honest notes
 
 - **Mainnet only.** NEAR Intents has no testnet, so payment tests use real money in tiny amounts.

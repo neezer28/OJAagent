@@ -9,8 +9,8 @@ create table if not exists products (
   price_ngn numeric not null,
   stock numeric not null default 0,
   active boolean not null default true
-);
-
+,
+  image_url text);
 create table if not exists customers (
   id uuid primary key default gen_random_uuid(),
   telegram_id bigint not null unique,
@@ -83,3 +83,7 @@ select * from (values
   ('Aso Oke - Gold', 'yard', 12000, 30)
 ) as v(name, unit, price_ngn, stock)
 where not exists (select 1 from products);
+
+update products set image_url = 'https://raw.githubusercontent.com/neezer28/OJAagent/main/public/products/ankara-blue.jpg' where name = 'Ankara Wax Print - Blue';
+update products set image_url = 'https://raw.githubusercontent.com/neezer28/OJAagent/main/public/products/ankara-red.jpg' where name = 'Ankara Wax Print - Red';
+update products set image_url = 'https://raw.githubusercontent.com/neezer28/OJAagent/main/public/products/aso-oke-gold.jpg' where name = 'Aso Oke - Gold';

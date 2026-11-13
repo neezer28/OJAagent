@@ -1,5 +1,5 @@
 import { Bot } from "grammy";
-import { listProducts, getOrCreateCustomer, createOrder, formatInvoice } from "../lib/orders";
+import { listProducts, listProductImages, getOrCreateCustomer, createOrder, formatInvoice } from "../lib/orders";
 import { addToCart, getCart, clearCart } from "../lib/cart";
 import { runAgent } from "../lib/agent";
    import { registerPayments } from "./pay";
@@ -19,6 +19,20 @@ bot.command("catalog", async (ctx) => {
     (p, i) => `${i + 1}. ${p.name}: ${naira(Number(p.price_ngn))} per ${p.unit} (${p.stock} in stock)`
   );
   await ctx.reply(lines.join("\n") + "\n\nTo order: /add 1 6 (item 1, quantity 6)");
+
+  // Optional photos: one per product that has an image. Errors are ignored so the text catalog always works.
+  const images = await listProductImages();
+  for (let i = 0; i < products.length; i++) {
+    const url = images[products[i].id];
+    if (!url) continue;
+    try {
+      await ctx.replyWithPhoto(url, {
+        caption: (i + 1) + ". " + products[i].name + ": " + naira(Number(products[i].price_ngn)) + " per " + products[i].unit,
+      });
+    } catch (e) {
+      console.error("Could not send product photo", e);
+    }
+  }
 });
 
 bot.command("add", async (ctx) => {

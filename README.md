@@ -80,7 +80,7 @@ Stop any other copy of the same bot first. Two copies with the same token cause 
 
 | Do this in Telegram | You should see |
 |---|---|
-| `/catalog` | The products with prices and stock |
+| `/catalog` | The products with prices and stock, then a photo of each product that has one |
 | `/add 1 2`, then `/cart` | 2 yards of Ankara Wax Print - Blue and a total of ₦9,000 |
 | `/checkout` | An invoice with an order number and the total. The cart is empty again. |
 | `/add 3 17`, then `/checkout` | An invoice (₦204,000) saying the owner must approve it. The owner gets a message with **Approve** and **Reject** buttons. |
@@ -114,6 +114,7 @@ With a NEAR AI Cloud key that has credit, send plain text such as "Hi, what fabr
 - There is no owner dashboard yet. The owner works from Telegram and the Supabase table editor.
 - The chat assistant needs a NEAR AI Cloud key with credit. The hosted demo runs on a small balance, so the assistant may stop answering if it runs out.
 
+- Product photos are sample images used for demonstration and remain the property of their respective owners. They are stored in `public/products/` and sent through a public GitHub link kept in `products.image_url`. If a photo cannot be sent, the text catalog still works.
 ## What was built when
 
 Everything in this repository was built during the hackathon window. The author's earlier fabric-shop website (morade-fabrics) is a separate project and is not part of this code.

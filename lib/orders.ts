@@ -12,6 +12,21 @@ export async function listProducts() {
   return data ?? [];
 }
 
+// Optional product photos. This never breaks the catalog: on any error it returns an empty list.
+export async function listProductImages(): Promise<Record<string, string>> {
+  try {
+    const { data, error } = await db.from("products").select("id, image_url").eq("active", true);
+    if (error || !data) return {};
+    const out: Record<string, string> = {};
+    for (const row of data as { id: string; image_url: string | null }[]) {
+      if (row.image_url) out[row.id] = row.image_url;
+    }
+    return out;
+  } catch (e) {
+    return {};
+  }
+}
+
 export async function getOrCreateCustomer(telegramId: number, name?: string) {
   const { data: existing } = await db
     .from("customers")
